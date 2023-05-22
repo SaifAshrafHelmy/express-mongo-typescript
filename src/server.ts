@@ -22,12 +22,12 @@ mongoose
 const StartServer = () => {
     router.use((req, res, next) => {
         /* Log the request */
-        Logging.info(`Incoming -> Method [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
+        Logging.info(`Incoming <- Method [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
         res.on('finish', () => {
             /* Log the response  */
 
-            Logging.info(`Incoming -> Method [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}] - Status: [${res.statusCode}]`);
+            Logging.info(`Outgoing ->>> Method [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}] - Status: [${res.statusCode}]`);
         });
 
         next();
@@ -57,10 +57,12 @@ const StartServer = () => {
 
     /* Error Handling */
     router.use((req, res, next) => {
-        const error = new Error('not found');
+        const error = new Error('Path not found');
         Logging.error(error);
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ message: `${error.message}` });
     });
 
-    http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
+    http.createServer(router).listen(config.server.port, () => {
+        Logging.info(`Server is running on port ${config.server.port}`);
+    });
 };
