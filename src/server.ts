@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
-import Logging from './library/Logging';
+import Logging from './library/Logger';
 import authorRoutes from './routes/Author';
 import bookRoutes from './routes/Book';
 

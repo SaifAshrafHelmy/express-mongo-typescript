@@ -1,6 +1,6 @@
 import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Request, Response } from 'express';
-import Logging from '../library/logging';
+import Logging from '../library/Logger';
 import { IAuthor } from '../models/Author';
 import { IBook } from '../models/Book';
 

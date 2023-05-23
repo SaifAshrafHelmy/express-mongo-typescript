@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const config_1 = require("./config/config");
-const logging_1 = __importDefault(require("./library/logging"));
+const Logger_1 = __importDefault(require("./library/Logger"));
 const Author_1 = __importDefault(require("./routes/Author"));
 const Book_1 = __importDefault(require("./routes/Book"));
 const router = (0, express_1.default)();
@@ -15,21 +15,21 @@ const router = (0, express_1.default)();
 mongoose_1.default
     .connect(config_1.config.mongo.url, { retryWrites: true, w: 'majority' })
     .then(() => {
-    logging_1.default.info('connected to MongoDB successfully');
+    Logger_1.default.info('connected to MongoDB successfully');
     StartServer();
 })
     .catch((error) => {
-    logging_1.default.error(`Unable to connect to mongoDB`);
-    logging_1.default.error(error);
+    Logger_1.default.error(`Unable to connect to mongoDB`);
+    Logger_1.default.error(error);
 });
 /* only start the server if Mongo connects */
 const StartServer = () => {
     router.use((req, res, next) => {
         /* Log the request */
-        logging_1.default.info(`Incoming <- Method [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
+        Logger_1.default.info(`Incoming <- Method [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
         res.on('finish', () => {
             /* Log the response  */
-            logging_1.default.info(`Outgoing ->>> Method [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}] - Status: [${res.statusCode}]`);
+            Logger_1.default.info(`Outgoing ->>> Method [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}] - Status: [${res.statusCode}]`);
         });
         next();
     });
@@ -54,10 +54,10 @@ const StartServer = () => {
     /* Error Handling */
     router.use((req, res, next) => {
         const error = new Error('Path not found');
-        logging_1.default.error(error);
+        Logger_1.default.error(error);
         res.status(404).json({ message: `${error.message}` });
     });
     http_1.default.createServer(router).listen(config_1.config.server.port, () => {
-        logging_1.default.info(`Server is running on port ${config_1.config.server.port}`);
+        Logger_1.default.info(`Server is running on port ${config_1.config.server.port}`);
     });
 };

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Schemas = exports.ValidateSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
-const logging_1 = __importDefault(require("../library/logging"));
+const Logger_1 = __importDefault(require("../library/Logger"));
 const ValidateSchema = (schema) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -22,7 +22,7 @@ const ValidateSchema = (schema) => {
             next();
         }
         catch (error) {
-            logging_1.default.error(error);
+            Logger_1.default.error(error);
             return res.status(422).json({ error });
         }
     });
